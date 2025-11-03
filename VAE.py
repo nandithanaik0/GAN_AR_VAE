@@ -15,16 +15,8 @@ class VAE_model(nn.Module):
       self.decode_dim = decode_dim
       # Latent dimension (z_size) = half of final hidden size
       self.z_size = hidden_dims[-1] // 2
-      
-      ############################
-      # TODO: Implement the encoder
-      # - Use three fully connected hidden layers
-      # - Apply LeakyReLU activations after each hidden layer
-      # - Final layer should output 2 * latent_dim units 
-      #   (concatenated mean and log-variance, no activation after the final layer)
-      ############################
+    
       self.encoder = nn.Sequential(
-          # TODO: fill in layers here
           nn.Linear(input_dim, hidden_dims[0]),
           nn.LeakyReLU(0.2, inplace=True),
           nn.Linear(hidden_dims[0], hidden_dims[1]),
@@ -32,18 +24,11 @@ class VAE_model(nn.Module):
           nn.Linear(hidden_dims[1], hidden_dims[2]),
           nn.LeakyReLU(0.2, inplace=True),
           nn.Linear(hidden_dims[2], 2 * self.z_size)
-        #   nn.Identity()  # placeholder
+      
       )
       
-      ############################
-      # TODO: Implement the decoder
-      # - Mirror the encoder architecture with three hidden layers
-      # - Apply LeakyReLU activations after each hidden layer
-      # - Final layer should output 'decode_dim' units
-      # - Apply Sigmoid activation only on the last layer
-      ############################
       self.decoder = nn.Sequential(
-          # TODO: fill in layers here
+ 
           nn.Linear(self.z_size, hidden_dims[2]),
           nn.LeakyReLU(0.2, inplace=True),
           nn.Linear(hidden_dims[2], hidden_dims[1]),
@@ -52,7 +37,7 @@ class VAE_model(nn.Module):
           nn.LeakyReLU(0.2, inplace=True),
           nn.Linear(hidden_dims[0], self.decode_dim),
           nn.Sigmoid()
-        #   nn.Identity()  # placeholder
+      
       )
 
   def encode(self, x):
